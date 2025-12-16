@@ -1,26 +1,26 @@
-"name,sun,water,space,description"
-"Tomatoes,Full Sun,Medium,4,Grows well in containers with good sunlight"
-"Rose,Full Sun,Medium,3,Flowering plant suitable for balconies"
-"Aloe Vera,Full Sun,Low,2,Medicinal succulent with low water needs"
-"Money Plant,Partial Shade,Medium,1,Popular indoor plant with minimal care"
-"Tulsi,Full Sun,Medium,1,Sacred medicinal herb"
-"Cucumber,Full Sun,High,5,Fast-growing vegetable climber"
-"Snake Plant,Low Light,Low,1,Hardy indoor air-purifying plant"
-"Lavender,Full Sun,Low,2,Aromatic herb requiring dry soil"
-"Basil,Full Sun,Medium,1,Aromatic herb for cooking and pots"
-"Mint,Partial Shade,High,1,Herb that grows rapidly and spreads easily"
-"Spinach,Partial Shade,Medium,1,Leafy green for shallow containers"
-"Peppers,Full Sun,Medium,2,Compact vegetable plant for small gardens"
-"Strawberries,Full Sun,Medium,2,Ideal for hanging baskets or vertical planters"
-"Coriander,Partial Shade,Medium,1,Easy-to-grow culinary herb"
-"Chilli,Full Sun,Medium,2,Thrives well in pots and small gardens"
-"Marigolds,Full Sun,Low,1,Flowering plant that repels pests naturally"
-"Rosemary,Full Sun,Low,2,Drought-tolerant herb for pots"
-"Fenugreek,Full Sun,Medium,1,Quick-growing herb for culinary use"
-"Okra,Full Sun,High,3,Vegetable that grows well in containers"
-"Cherry Tomatoes,Full Sun,Medium,2,Compact tomato variety for small spaces"
-"Orchid,Partial Shade,Medium,2,Exotic flowering plant for indoor decoration"
-"Geranium,Full Sun,Medium,2,Flowering plant suitable for balconies"
-"Jasmine,Full Sun,Medium,3,Fragrant flowering plant for small gardens"
-"Peppermint,Partial Shade,High,1,Fast-growing herb suitable for pots"
-"Bamboo Palm,Partial Shade,Medium,3,Indoor plant that improves air quality"
+name,sun,water,space,description,image_url
+Tomatoes,Full Sun,Medium,4,Grows well in containers with good sunlight,https://upload.wikimedia.org/wikipedia/commons/8/88/Tomato_je.jpg
+Rose,Full Sun,Medium,3,Flowering plant suitable for balconies,https://upload.wikimedia.org/wikipedia/commons/b/bf/Rose_flower.jpg
+Aloe Vera,Full Sun,Low,2,Medicinal succulent with low water needs,https://upload.wikimedia.org/wikipedia/commons/1/1b/Aloe_vera_in_pot.jpg
+Money Plant,Partial Shade,Medium,1,Popular indoor plant with minimal care,https://upload.wikimedia.org/wikipedia/commons/3/3e/Money_Plant.jpg
+Tulsi,Full Sun,Medium,1,Sacred medicinal herb,https://upload.wikimedia.org/wikipedia/commons/7/7a/Tulsi_Plant.jpg
+Cucumber,Full Sun,High,5,Fast-growing vegetable climber,https://upload.wikimedia.org/wikipedia/commons/9/94/Cucumber_vegetable.jpg
+Snake Plant,Low Light,Low,1,Hardy indoor air-purifying plant,https://upload.wikimedia.org/wikipedia/commons/4/4b/Sansevieria_trifasciata_01.jpg
+Lavender,Full Sun,Low,2,Aromatic herb requiring dry soil,https://upload.wikimedia.org/wikipedia/commons/6/6e/Lavender_flower.jpg
+Basil,Full Sun,Medium,1,Aromatic herb for cooking and pots,https://upload.wikimedia.org/wikipedia/commons/4/4c/Basil-Basilico-Ocimum_basilicum-albahaca.jpg
+Mint,Partial Shade,High,1,Herb that grows rapidly and spreads easily,https://upload.wikimedia.org/wikipedia/commons/5/53/Mentha_spicata_(Mint)_leaves.jpg
+Spinach,Partial Shade,Medium,1,Leafy green for shallow containers,https://upload.wikimedia.org/wikipedia/commons/0/05/Spinacia_oleracea_Spinazie_bloeiend.jpg
+Peppers,Full Sun,Medium,2,Compact vegetable plant for small gardens,https://upload.wikimedia.org/wikipedia/commons/7/7f/Bell_pepper.jpg
+Strawberries,Full Sun,Medium,2,Ideal for hanging baskets or vertical planters,https://upload.wikimedia.org/wikipedia/commons/2/29/Strawberries.jpg
+Coriander,Partial Shade,Medium,1,Easy-to-grow culinary herb,https://upload.wikimedia.org/wikipedia/commons/5/5b/Coriander_leaves.jpg
+Chilli,Full Sun,Medium,2,Thrives well in pots and small gardens,https://upload.wikimedia.org/wikipedia/commons/2/2b/Chilli_Pepper.jpg
+Marigolds,Full Sun,Low,1,Flowering plant that repels pests naturally,https://upload.wikimedia.org/wikipedia/commons/f/fc/Marigold_flower.jpg
+Rosemary,Full Sun,Low,2,Drought-tolerant herb for pots,https://upload.wikimedia.org/wikipedia/commons/6/66/Rosemary_rosemaryus.jpg
+Fenugreek,Full Sun,Medium,1,Quick-growing herb for culinary use,https://upload.wikimedia.org/wikipedia/commons/8/81/Fenugreek-Leaves.jpg
+Okra,Full Sun,High,3,Vegetable that grows well in containers,https://upload.wikimedia.org/wikipedia/commons/f/f1/Okra.jpg
+Cherry Tomatoes,Full Sun,Medium,2,Compact tomato variety for small spaces,https://upload.wikimedia.org/wikipedia/commons/d/d5/Cherry_tomatoes.jpg
+Orchid,Partial Shade,Medium,2,Exotic flowering plant for indoor decoration,https://upload.wikimedia.org/wikipedia/commons/b/bd/Orchid_flower.jpg
+Geranium,Full Sun,Medium,2,Flowering plant suitable for balconies,https://upload.wikimedia.org/wikipedia/commons/3/3e/Geranium_plant.jpg
+Jasmine,Full Sun,Medium,3,Fragrant flowering plant for small gardens,https://upload.wikimedia.org/wikipedia/commons/6/64/Jasmine_flower.jpg
+Peppermint,Partial Shade,High,1,Fast-growing herb suitable for pots,https://upload.wikimedia.org/wikipedia/commons/3/35/Peppermint_plant.jpg
+Bamboo Palm,Partial Shade,Medium,3,Indoor plant that improves air quality,https://upload.wikimedia.org/wikipedia/commons/0/09/Bamboo_Palm.jpg

@@ -20,7 +20,7 @@ if os.path.exists(PLANT_CSV_PATH):
     plant_df = pd.read_csv(PLANT_CSV_PATH)
 else:
     st.error("Plant database CSV not found. Upload 'plants.csv' in the project folder.")
-    plant_df = pd.DataFrame(columns=["name", "sun", "water", "space", "description", "image_url"])
+    plant_df = pd.DataFrame(columns=["name", "sun", "water", "space", "description"])
 
 # --------------------------------------------------
 # Home Page
@@ -122,9 +122,6 @@ def plant_recommendation_page():
                     """,
                     unsafe_allow_html=True
                 )
-                # Display image if 'image_url' column exists and is not empty
-                if "image_url" in plant and pd.notna(plant["image_url"]) and plant["image_url"].strip() != "":
-                    st.image(plant["image_url"], use_column_width=True)
         else:
             st.warning("No matching plants found. Try adjusting inputs or search.")
 
@@ -146,12 +143,6 @@ def seasonal_guide_page():
         plants = ["Mint", "Rosemary", "Indoor Herbs"]
 
     for p in plants:
-        # Display plant image if exists in CSV
-        plant_info = plant_df[plant_df["name"] == p]
-        if not plant_info.empty and "image_url" in plant_info.columns:
-            img_url = plant_info.iloc[0]["image_url"]
-            if pd.notna(img_url) and img_url.strip() != "":
-                st.image(img_url, width=200)
         st.write(f"• {p}")
 
 # --------------------------------------------------

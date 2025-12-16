@@ -1,5 +1,5 @@
 import streamlit as st
-import joblib
+import pandas as pd
 import os
 
 # --------------------------------------------------
@@ -12,143 +12,147 @@ st.set_page_config(
 )
 
 # --------------------------------------------------
-# Load Trained ML Model Safely
+# Load Plant Database from CSV
 # --------------------------------------------------
-MODEL_PATH = "plant_model.pkl"
-if os.path.exists(MODEL_PATH):
-    model = joblib.load(MODEL_PATH)
+PLANT_CSV_PATH = "plants.csv"
+
+if os.path.exists(PLANT_CSV_PATH):
+    plant_df = pd.read_csv(PLANT_CSV_PATH)
 else:
-    model = None
-    st.warning("ML model not found. Plant Recommendation page will not work until 'plant_model.pkl' is uploaded.")
-
-# --------------------------------------------------
-# Plant Knowledge Base
-# --------------------------------------------------
-PLANTS = [
-    {"name": "Tomatoes", "type": "Vegetable", "sunlight": "Full Sun", "space": 4, "water": "Medium",
-     "description": "Well-suited for containers and balconies. Cherry varieties perform best in urban spaces."},
-    {"name": "Lettuce", "type": "Vegetable", "sunlight": "Partial Shade", "space": 1, "water": "High",
-     "description": "Fast-growing leafy green ideal for compact containers and frequent harvests."},
-    {"name": "Basil", "type": "Herb", "sunlight": "Full Sun", "space": 1, "water": "Medium",
-     "description": "Aromatic herb that grows well on windowsills and pairs well with tomatoes."},
-    {"name": "Mint", "type": "Herb", "sunlight": "Partial Shade", "space": 1, "water": "High",
-     "description": "Robust grower best maintained in containers to control spreading."},
-    {"name": "Peppers", "type": "Vegetable", "sunlight": "Full Sun", "space": 2, "water": "Medium",
-     "description": "Compact pepper varieties adapt well to pots and container gardens."},
-    {"name": "Spinach", "type": "Vegetable", "sunlight": "Partial Shade", "space": 1, "water": "Medium",
-     "description": "Cool-season crop that performs well in shallow containers."},
-    {"name": "Rosemary", "type": "Herb", "sunlight": "Full Sun", "space": 2, "water": "Low",
-     "description": "Drought-tolerant herb requiring minimal maintenance."},
-    {"name": "Strawberries", "type": "Fruit", "sunlight": "Full Sun", "space": 2, "water": "Medium",
-     "description": "Excellent choice for hanging baskets and vertical planters."},
-    {"name": "Marigolds", "type": "Flower", "sunlight": "Full Sun", "space": 1, "water": "Low",
-     "description": "Natural pest deterrent and companion plant for vegetables."}
-]
-
-# --------------------------------------------------
-# Seasonal Knowledge
-# --------------------------------------------------
-SEASONAL_GUIDE = {
-    "Spring": {
-        "months": "March – May",
-        "plants": ["Tomatoes", "Peppers", "Basil", "Lettuce", "Spinach", "Strawberries"],
-        "tips": ["Prepare soil with organic compost", "Gradually acclimate seedlings", "Monitor temperature"]
-    },
-    "Summer": {
-        "months": "June – August",
-        "plants": ["Tomatoes", "Peppers", "Basil", "Strawberries", "Marigolds"],
-        "tips": ["Ensure consistent watering", "Use mulch", "Provide afternoon shade"]
-    },
-    "Fall": {
-        "months": "September – November",
-        "plants": ["Lettuce", "Spinach", "Marigolds"],
-        "tips": ["Grow cool-season crops", "Protect from frost", "Clean containers"]
-    },
-    "Winter": {
-        "months": "December – February",
-        "plants": ["Mint", "Rosemary"],
-        "tips": ["Move plants indoors", "Ensure sunlight", "Plan next cycle"]
-    }
-}
+    st.error("Plant database CSV not found. Upload 'plants.csv' in the project folder.")
+    plant_df = pd.DataFrame(columns=["name", "sun", "water", "space", "description", "image_url"])
 
 # --------------------------------------------------
 # Home Page
 # --------------------------------------------------
 def home_page():
-    st.title("Urban Gardening Assistant")
-    st.write("A decision-support platform recommending suitable plants based on space and environment.")
+    st.title("🌱 Urban Gardening Assistant")
+
+    st.markdown(
+        """
+        Urban Gardening Assistant is a smart, user-focused platform designed to help
+        urban residents make informed gardening decisions.
+        Users can search any plant and get guidance based on sunlight, water, and space requirements.
+        """
+    )
+
+    st.markdown("---")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.subheader("Purpose")
+        st.write(
+            """
+            Support urban residents to grow plants in limited spaces such as balconies, rooftops, or indoors.
+            The system suggests plants likely to thrive in the given environment.
+            """
+        )
+
+    with col2:
+        st.subheader("Key Features")
+        st.write(
+            """
+            • Dynamic plant database (CSV)  
+            • Search any plant → Info fetched automatically  
+            • Recommendations based on sunlight, water, and space  
+            • User-friendly and beginner-oriented  
+            """
+        )
+
+    st.markdown("---")
+
+    st.subheader("How It Works")
+    st.write(
+        """
+        Users provide available space, sunlight exposure, and watering habits.
+        The system evaluates plant suitability and explains why each plant is recommended.
+        """
+    )
 
 # --------------------------------------------------
-# Recommendation Page
+# Plant Recommendation Page
 # --------------------------------------------------
 def plant_recommendation_page():
     st.title("Plant Recommendations")
 
-    if model is None:
-        st.error("ML model not loaded.")
-        return
+    search = st.text_input("Search plant (optional)")
 
     col1, col2, col3 = st.columns(3)
-
     with col1:
-        sunlight = st.selectbox(
-            "Sunlight availability",
-            ["Full Sun (6+ hours)", "Partial Shade (3–6 hours)", "Low Light"]
-        )
+        sunlight = st.selectbox("Sunlight", ["Full Sun", "Partial Shade", "Low Light"])
     with col2:
         space = st.slider("Available space (sq ft)", 1, 50, 10)
     with col3:
-        water = st.selectbox("Watering frequency", ["Daily", "Every 2–3 days", "Weekly"])
-
-    sunlight_encoding = {"Full Sun (6+ hours)": 2, "Partial Shade (3–6 hours)": 1, "Low Light": 0}
-    water_encoding = {"Daily": 2, "Every 2–3 days": 1, "Weekly": 0}
+        water = st.selectbox("Watering frequency", ["Low", "Medium", "High"])
 
     if st.button("Generate Recommendations"):
-        sun_val = sunlight_encoding[sunlight]
-        water_val = water_encoding[water]
+        results = []
 
-        recommendations = []
+        for _, plant in plant_df.iterrows():
+            if search and search.lower() not in plant["name"].lower():
+                continue
 
-        for plant in PLANTS:
-            try:
-                probability = model.predict_proba(
-                    [[sun_val, plant["space"], water_val]]
-                )[0][1]
-            except Exception:
-                prediction = model.predict(
-                    [[sun_val, plant["space"], water_val]]
-                )[0]
-                probability = 0.75 if prediction == 1 else 0.25
+            score = 0
+            reasons = []
 
-            if probability >= 0.6:
-                plant_copy = plant.copy()
-                plant_copy["probability"] = probability
-                recommendations.append(plant_copy)
+            if plant["sun"] == sunlight:
+                score += 0.4
+                reasons.append("Sunlight matches your selection")
+            if plant["water"] == water:
+                score += 0.3
+                reasons.append("Watering frequency matches your selection")
+            if plant["space"] <= space:
+                score += 0.3
+                reasons.append("Space available is sufficient")
 
-        recommendations.sort(key=lambda x: x["probability"], reverse=True)
+            if score >= 0.5:
+                results.append((plant, score, reasons))
 
-        if recommendations:
-            for plant in recommendations:
-                st.subheader(plant["name"])
-                st.progress(int(plant["probability"] * 100))
-                st.caption(f"Suitability Probability: {plant['probability']:.2f}")
-                st.write(plant["description"])
+        if results:
+            for plant, score, reasons in sorted(results, key=lambda x: x[1], reverse=True):
+                st.markdown(
+                    f"""
+                    <div style='border:1px solid #ddd; border-radius:10px; padding:15px; margin-bottom:10px;'>
+                        <h4>{plant['name']}</h4>
+                        <p>{plant['description']}</p>
+                        <b>Suitability Score:</b> {int(score*100)}%<br>
+                        <b>Why recommended:</b> {', '.join(reasons)}
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+                # Display image if 'image_url' column exists and is not empty
+                if "image_url" in plant and pd.notna(plant["image_url"]) and plant["image_url"].strip() != "":
+                    st.image(plant["image_url"], use_column_width=True)
         else:
-            st.warning("No suitable plants found. Adjust inputs.")
+            st.warning("No matching plants found. Try adjusting inputs or search.")
 
 # --------------------------------------------------
 # Seasonal Guide Page
 # --------------------------------------------------
 def seasonal_guide_page():
     st.title("Seasonal Planting Guide")
-    season = st.selectbox("Select season", list(SEASONAL_GUIDE.keys()))
-    data = SEASONAL_GUIDE[season]
 
-    st.subheader(f"{season} ({data['months']})")
-    for plant in data["plants"]:
-        st.write(f"- {plant}")
-    for tip in data["tips"]:
-        st.write(f"- {tip}")
+    season = st.selectbox("Select season", ["Spring", "Summer", "Monsoon", "Winter"])
+
+    if season == "Spring":
+        plants = ["Tomatoes", "Basil", "Coriander", "Lettuce"]
+    elif season == "Summer":
+        plants = ["Chilli", "Peppers", "Mint", "Okra"]
+    elif season == "Monsoon":
+        plants = ["Spinach", "Coriander", "Fenugreek"]
+    else:
+        plants = ["Mint", "Rosemary", "Indoor Herbs"]
+
+    for p in plants:
+        # Display plant image if exists in CSV
+        plant_info = plant_df[plant_df["name"] == p]
+        if not plant_info.empty and "image_url" in plant_info.columns:
+            img_url = plant_info.iloc[0]["image_url"]
+            if pd.notna(img_url) and img_url.strip() != "":
+                st.image(img_url, width=200)
+        st.write(f"• {p}")
 
 # --------------------------------------------------
 # Main App
@@ -158,7 +162,11 @@ def main():
     page = st.sidebar.radio("Explore", ["Home", "Plant Recommendation", "Seasonal Guide"])
 
     st.sidebar.markdown("---")
-    st.sidebar.info("👩‍💻 **Kirti Kumari**\nPre-final year CSE\nAI/ML Enthusiast")
+    st.sidebar.info(
+        "👩‍💻 **Developer:** Kirti Kumari|\n"
+        "3rd-year Computer Science Engineering student|\n"
+        "Focused on AI & ML and building practical, user-centric applications"
+    )
 
     if page == "Home":
         home_page()
@@ -168,7 +176,8 @@ def main():
         seasonal_guide_page()
 
     st.markdown("---")
-    st.caption("© 2025 Kirti Kumari | Urban Gardening Assistant")
+    st.caption("© 2025 Urban Gardening Assistant | Kirti Kumari")
+
 
 if __name__ == "__main__":
     main()
